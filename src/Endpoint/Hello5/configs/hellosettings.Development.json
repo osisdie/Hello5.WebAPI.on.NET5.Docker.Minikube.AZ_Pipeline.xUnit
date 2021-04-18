@@ -1,0 +1,9 @@
+{
+  "HELLO": {
+    "Name": "configs/hellosettings.Development.json",
+    "IsProfiling": "false"
+  }
+  //"ConnectionStrings": {
+  //  "HELLODB_CONN": "Data Source=.\\sqlexpress;Initial Catalog=HelloDB;user id=dem0user;password=dem0pwd;Connection Timeout=5"
+  //}
+}

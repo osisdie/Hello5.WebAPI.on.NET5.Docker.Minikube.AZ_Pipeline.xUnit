@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello5-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hello5/?(.*)
+        backend:
+          serviceName: hello5-svc
+          servicePort: 80

@@ -1,0 +1,6 @@
+{
+  "HELLO": {
+    "Name": "configs/hellosettings.Debug.json",
+    "IsProfiling": "false"
+  }
+}

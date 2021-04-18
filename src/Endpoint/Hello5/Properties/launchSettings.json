@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:18735",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Hello5.Domain.Endpoint": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "health",
+      "applicationUrl": "http://localhost:5005",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Debug",
+        //"ASPNETCORE_ENVIRONMENT": "Development"
+        //"ASPNETCORE_ENVIRONMENT": "Production"
+        "COREFX_DEPLOY_NAME": "hello5",
+        "COREFX_API_NAME": "hello5-debug"
+        //"AWS_ACCESS_KEY_ID": "",
+        //"AWS_SECRET_ACCESS_KEY": ""
+        //"HELLO_HELLODB_CONN": "",
+        //"HELLO_REDIS_CACHE_CONN": ""
+      }
+    }
+  }
+}

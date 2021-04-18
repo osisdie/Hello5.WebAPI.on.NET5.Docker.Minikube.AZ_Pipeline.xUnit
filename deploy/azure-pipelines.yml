@@ -1,0 +1,140 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+name: "build hello5-api"
+trigger:
+  branches:
+    include:
+      - master
+      - feature/*
+  paths:
+    exclude:
+      - .editorconfig
+      - .gitignore
+      - .gitattributes
+      - deploy/*
+      - tests/*
+      - '**/App_Data/*'
+      - '**/*.bat'
+      - '**/*.config'
+      - '**/*.csproj'
+      - '**/*.md'
+      - '**/*.sh'
+      - '**/*.sln'
+      - '**/*.json'
+      - '**/*.yml'
+      - '**/*.yaml'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  #- you could warp all dynamic variable into a group
+  #- group: Hello5-var-group
+  - name: AZ_GIT_USER_EMAIL
+    value: ci@example.com
+  - name: AZ_GIT_USER_NAME
+    value: ci
+  - name: SVC_VERSION_FILE
+    value: src/Endpoint/Hello5/.version    
+  - name: VAR_NUGET_FILE_PATH
+    value: 'Nuget.Config'
+  - name: VAR_SOLUTION
+    value: '**/*.sln'
+  - name: VAR_BUILD_PLATFORM
+    value: 'Any CPU'
+  - name: VAR_BUILD_CONFIGURATION
+    value: 'Release'
+  - name: VAR_TEST_PROJECTS
+    value: 'hello5-api-all-projects.sln'
+  - name: VAR_DOCKER_REPO_NAME 
+    value: hello5-api
+    readonly: true
+  - name: VAR_DOCKERFILE_PATH
+    value: 'Dockerfile'
+  - name: VAR_AWS_REGION
+    value : 'us-west-2'
+  - name: VAR_BUILD_ID
+    value: $(Build.BuildId)
+  - name: VAR_DOCKER_PUSH_ENABLED
+    value: false
+
+steps:
+  - checkout: self
+    persistCredentials: true
+
+  - script: |
+      cat "retrieving version from the file: $(SVC_VERSION_FILE)"
+      CURRENT_VERSION=${SVC_MANUAL_VERSION:-$(cat $(SVC_VERSION_FILE) | head -n1)}
+
+      if [ -n "$CURRENT_VERSION" ]; then echo "version is set to '$CURRENT_VERSION'"; else echo "version is unset" && exit 1; fi
+      echo "##vso[task.setvariable variable=CURRENT_VERSION]$CURRENT_VERSION-${{ variables.VAR_BUILD_ID }}"
+    displayName: 'Versioning'   
+
+  - task: UseDotNet@2
+    displayName: Install .NET SDK
+    inputs:
+      packageType: 'sdk'
+      version: '5.x'
+      includePreviewVersions: true
+
+  #- task: NuGetAuthenticate@0
+  #    displayName: 'Connect Private.Nuget'
+  #    inputs:
+  #    nuGetServiceConnections: Private.Nuget
+  #    forceReinstallCredentialProvider: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: restore
+      feedsToUse: 'config'
+      nugetConfigPath: ${{ variables.VAR_NUGET_FILE_PATH }}
+      includeNuGetOrg: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: build
+      arguments: '-c ${{ variables.VAR_BUILD_CONFIGURATION }}'
+    
+  - script: |
+      sudo cp $(SVC_OPENSSL_FILE) /usr/lib/ssl/openssl.cnf
+    displayName: 'Prepare testing environment'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      COREFX_API_NAME: $(SVC_API_NAME)
+    inputs:
+      command: test
+      arguments: '-c ${{ variables.VAR_BUILD_CONFIGURATION }} ${{ variables.VAR_TEST_PROJECTS }}'
+
+  - script: |
+      echo "starting docker build..."
+      echo "docker build -t ${{ variables.VAR_DOCKER_REPO_NAME }}:$(CURRENT_VERSION) -f $(System.DefaultWorkingDirectory)/${{ variables.VAR_DOCKERFILE_PATH }} ."
+      docker build -t ${{ variables.VAR_DOCKER_REPO_NAME }}:$(CURRENT_VERSION) -f $(System.DefaultWorkingDirectory)/${{ variables.VAR_DOCKERFILE_PATH }} .        
+    displayName: 'Docker build' 
+  
+  - task: ECRPushImage@1
+    displayName:  Docker push
+    condition: and(succeeded(), eq(variables['VAR_DOCKER_PUSH_ENABLED'], true))
+    inputs:
+      awsCredentials: 'aws-shared'
+      regionName: 'us-west-2'
+      imageSource: 'imagename'
+      sourceImageName: '${{ variables.VAR_DOCKER_REPO_NAME }}'
+      sourceImageTag: '$(CURRENT_VERSION)'
+      repositoryName: '${{ variables.VAR_DOCKER_REPO_NAME }}'
+      pushTag: '$(CURRENT_VERSION)'
+
+  - script: |
+      git config --global user.email $(AZ_GIT_USER_EMAIL)
+      git config --global user.name $(AZ_GIT_USER_NAME)
+      git tag -a ${{ variables.VAR_DOCKER_REPO_NAME }}/v$(CURRENT_VERSION) -m 'ci: Pipeline git tagged [skip ci]' 
+      git push --tags
+    workingDirectory: $(Build.SourcesDirectory)
+    condition: and(succeeded(), eq(variables['VAR_DOCKER_PUSH_ENABLED'], true))
+    displayName: 'Git Tag'

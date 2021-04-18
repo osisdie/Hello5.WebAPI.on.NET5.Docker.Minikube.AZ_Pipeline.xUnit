@@ -1,0 +1,9 @@
+{
+  "HELLO": {
+    "Name": "configs/hellosettings.Debug.json",
+    "IsProfiling": "false"
+  },
+  "ConnectionStrings": {
+    "DefaultConnectionString": "Data Source=(local);Initial Catalog=HelloDB;integrated security=True;"
+  }
+}
