@@ -2,7 +2,7 @@
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-name: "build hello5-api"
+name: "build hello8-api"
 trigger:
   branches:
     include:
@@ -31,13 +31,13 @@ pool:
 
 variables:
   #- you could warp all dynamic variable into a group
-  #- group: Hello5-var-group
+  #- group: Hello8-var-group
   - name: AZ_GIT_USER_EMAIL
     value: ci@example.com
   - name: AZ_GIT_USER_NAME
     value: ci
   - name: SVC_VERSION_FILE
-    value: src/Endpoint/Hello5/.version    
+    value: src/Endpoint/Hello8/.version
   - name: VAR_NUGET_FILE_PATH
     value: 'Nuget.Config'
   - name: VAR_SOLUTION
@@ -47,9 +47,9 @@ variables:
   - name: VAR_BUILD_CONFIGURATION
     value: 'Release'
   - name: VAR_TEST_PROJECTS
-    value: 'hello5-api-all-projects.sln'
-  - name: VAR_DOCKER_REPO_NAME 
-    value: hello5-api
+    value: 'hello8-api-all-projects.sln'
+  - name: VAR_DOCKER_REPO_NAME
+    value: hello8-api
     readonly: true
   - name: VAR_DOCKERFILE_PATH
     value: 'Dockerfile'
@@ -70,13 +70,13 @@ steps:
 
       if [ -n "$CURRENT_VERSION" ]; then echo "version is set to '$CURRENT_VERSION'"; else echo "version is unset" && exit 1; fi
       echo "##vso[task.setvariable variable=CURRENT_VERSION]$CURRENT_VERSION-${{ variables.VAR_BUILD_ID }}"
-    displayName: 'Versioning'   
+    displayName: 'Versioning'
 
   - task: UseDotNet@2
     displayName: Install .NET SDK
     inputs:
       packageType: 'sdk'
-      version: '5.x'
+      version: '8.x'
       includePreviewVersions: true
 
   #- task: NuGetAuthenticate@0
@@ -98,7 +98,7 @@ steps:
     inputs:
       command: build
       arguments: '-c ${{ variables.VAR_BUILD_CONFIGURATION }}'
-    
+
   - script: |
       sudo cp $(SVC_OPENSSL_FILE) /usr/lib/ssl/openssl.cnf
     displayName: 'Prepare testing environment'
@@ -116,8 +116,8 @@ steps:
       echo "starting docker build..."
       echo "docker build -t ${{ variables.VAR_DOCKER_REPO_NAME }}:$(CURRENT_VERSION) -f $(System.DefaultWorkingDirectory)/${{ variables.VAR_DOCKERFILE_PATH }} ."
       docker build -t ${{ variables.VAR_DOCKER_REPO_NAME }}:$(CURRENT_VERSION) -f $(System.DefaultWorkingDirectory)/${{ variables.VAR_DOCKERFILE_PATH }} .        
-    displayName: 'Docker build' 
-  
+    displayName: 'Docker build'
+
   - task: ECRPushImage@1
     displayName:  Docker push
     condition: and(succeeded(), eq(variables['VAR_DOCKER_PUSH_ENABLED'], true))

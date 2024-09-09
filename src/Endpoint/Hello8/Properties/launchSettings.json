@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://+:18735",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Hello8.Domain.Endpoint": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "health",
+      "applicationUrl": "http://+:5005",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Debug",
+        //"ASPNETCORE_ENVIRONMENT": "Development"
+        //"ASPNETCORE_ENVIRONMENT": "Production"
+        "COREFX_DEPLOY_NAME": "hello8",
+        "COREFX_API_NAME": "hello8-debug"
+        //"AWS_ACCESS_KEY_ID": "",
+        //"AWS_SECRET_ACCESS_KEY": ""
+        //"HELLO_HELLODB_CONN": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HelloDB;user id=demouser;password=demopwd;Connection Timeout=5",
+        //"HELLO_REDIS_CACHE_CONN": "127.0.0.1:6379"
+      }
+    }
+  }
+}

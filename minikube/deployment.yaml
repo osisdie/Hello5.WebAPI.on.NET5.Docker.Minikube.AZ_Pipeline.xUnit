@@ -1,29 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello5
+  name: hello8-api-dev
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
-      app: hello5
+      app: hello8-api-dev
   template:
     metadata:
       labels:
-        app: hello5
+        app: hello8-api-dev
     spec:
+      imagePullSecrets:
+      - name: regcred  # Add this line to specify the secret
       containers:
-      - name: hello5
-        image: ${IMAGE_HOST}/hello5:1.0.0.2
+      - name: hello8-api
+        image: ${IMAGE_HOST}/hello8-api:2.0.1
         ports:
-        - containerPort: 80
+        - containerPort: 80 # 8080
         env:
+        - name: ASPNETCORE_URLS
+          value: http://+:80
         - name: ASPNETCORE_ENVIRONMENT
           value: Development
         - name: COREFX_DEPLOY_NAME
-          value: hello5
+          value: hello8-api-dev
         - name: COREFX_API_NAME
-          value: hello5-dev
+          value: hello8-api-dev
         - name: HELLO_HELLODB_CONN
           value: ${HELLO_HELLODB_CONN}
         - name: HELLO_REDIS_CACHE_CONN

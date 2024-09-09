@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello5-svc
+  name: hello8-api-dev-svc
   labels:
-    app: hello5-svc
+    app: hello8-api-dev-svc
 spec:
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 80 # 8080
+    targetPort: 80 # 8080
     protocol: TCP
     name: http
   selector:
-    app: hello5
+    app: hello8-api-dev

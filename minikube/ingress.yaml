@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello5-ingress
+  name: hello8-api-dev-ingress
 spec:
   rules:
   - http:
       paths:
-      - path: /hello5/?(.*)
+      - path: /hello8/?(.*)
         backend:
-          serviceName: hello5-svc
+          serviceName: hello8-api-dev-svc
           servicePort: 80
