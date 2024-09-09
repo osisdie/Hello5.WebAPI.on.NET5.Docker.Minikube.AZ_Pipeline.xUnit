@@ -27,12 +27,11 @@ namespace Hello8.Domain.Endpoint.Controllers
         public async Task<ActionResult> EchoV1(HelloEchoRequestDto requestDto)
         {
             if (!ModelState.IsValid)
-            {
                 return new BadRequestResult();
-            }
+            
             requestDto.PreProcess();
-
             var fakeSessionId = DateTime.UtcNow.Ticks.ToString();
+            
             await Task.CompletedTask;
             return new OkObjectResult(fakeSessionId);
         }
@@ -44,18 +43,19 @@ namespace Hello8.Domain.Endpoint.Controllers
         public async Task<ActionResult> EchoV2(HelloEchoRequestDto requestDto)
         {
             if (!ModelState.IsValid)
-            {
                 return new BadRequestResult();
-            }
+            
             requestDto.PreProcess();
             var res = new SvcResponse<HelloEchoResponseDto>();
             var fakeSessionId = DateTime.UtcNow.Ticks.ToString();
 
-            res.Data.Recv = fakeSessionId;
-            res.Success();
+            res.Data = new HelloEchoResponseDto
+            {
+                Recv = fakeSessionId
+            };
 
             await Task.CompletedTask;
-            return new JsonResult(res);
+            return new JsonResult(res.Success());
         }
     }
 }

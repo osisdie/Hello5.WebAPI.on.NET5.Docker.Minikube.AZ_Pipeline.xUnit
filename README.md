@@ -1,5 +1,4 @@
 ## Prerequisite
-
 - [Download .NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
   - And the latest Visual Studio / VS Code
 - [Setup minikube](https://minikube.sigs.k8s.io/docs/start/)
@@ -36,7 +35,6 @@
 
 ## Projects
 ---
-
 **Hello8.Domain.Endpoint** is the primary project wraps all the other dependent projects, such as
 - CoreFX: Including abstraction design, common utilites
   - CoreFX.Abstractions

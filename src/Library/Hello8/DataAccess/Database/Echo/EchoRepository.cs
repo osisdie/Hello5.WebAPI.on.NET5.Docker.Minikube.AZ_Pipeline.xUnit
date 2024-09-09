@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
 using CoreFX.Abstractions.Bases;
@@ -11,6 +10,7 @@ using CoreFX.Abstractions.Enums;
 using CoreFX.Caching.Redis.Extensions;
 using Hello8.Domain.Common;
 using Hello8.Domain.DataAccess.Database.Echo.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
