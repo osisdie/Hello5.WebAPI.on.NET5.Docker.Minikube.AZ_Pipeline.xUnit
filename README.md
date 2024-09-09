@@ -11,7 +11,7 @@
 ## Features
 ---
 - Use NET Standard 2.1 for library projects
-- Use NET 5 for Web Applications (compatible with .NET Core 3.1)
+- Use NET 8.0 for Web Applications (Migrated from NET 5.0)
 - Use Built-In Microsoft ConfigurationBuilder to config (appsettings.json, hellosettings.json)
 - Use Secret Storage to protect sensitive configs
 - Use Log4net Logging on console, file and AWS CloudWatch on demand
@@ -119,6 +119,7 @@ Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration:
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT = 'Debug'
+$env:HELLO_HELLODB_CONN = 'Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HelloDB;user id=demouser;password=demopwd;Connection Timeout=5'
 $env:HELLO_REDIS_CACHE_CONN = '127.0.0.1:6379'
 
 dotnet test tests/UnitTest/CoreFX/Caching/Redis/UnitTest.CoreFX.Caching.Redis.csproj -c Release --filter FullyQualifiedName=UnitTest.CoreFX.Caching.Redis.Tests.Cache_Test.Integration_Test
@@ -175,7 +176,6 @@ ENTRYPOINT ["dotnet", "Hello8.Domain.Endpoint.dll"]
 ```
 
 
-
 #### Run `dockerbuild.sh`
 
 ```bash
@@ -207,7 +207,6 @@ docker build . -t $IMAGE_HOST_WITH_TAG -f Dockerfile
 
 docker push $IMAGE_HOST_WITH_TAG
 ```
-
 
 
 ### Minikube deployment  (For Example)
@@ -257,7 +256,6 @@ spec:
 ```
 
 
-
 #### Review `service.yaml`
 
 ```yaml
@@ -276,7 +274,6 @@ spec:
   selector:
     app: hello8-api-dev
 ```
-
 
 
 #### Run `minikube.sh`
@@ -343,7 +340,6 @@ curl http://127.0.0.1:38311/health
 ```
 
 
-
 ## HealthChecks
 
 ### Set testing base url
@@ -355,14 +351,12 @@ BASE_URL=http://+:38311
 ```
 
 
-
 ### Is accessable ?
 
 ```bash
 curl ${BASE_URL}/health
 # Healthy
 ```
-
 
 
 ### Check service's version
@@ -377,7 +371,6 @@ curl ${BASE_URL}/api/echo/ver
 curl ${BASE_URL}/api/echo/ver | jq '.data'
 # Expect result: "2.0.1"
 ```
-
 
 
 ### Check config exists
@@ -397,7 +390,6 @@ curl ${BASE_URL}/api/echo/config | jq '.data'
 ```
 
 
-
 ### Check database's connection
 
 - Unhealthy
@@ -413,7 +405,6 @@ curl ${BASE_URL}/api/echo/db | jq '.isSuccess'
 ```
 
 
-
 - Healthy
   - Check your environment variable **HELLO_HELLODB_CONN** before deployment
 
@@ -425,7 +416,6 @@ curl ${BASE_URL}/api/echo/db
 curl ${BASE_URL}/api/echo/db | jq '.isSuccess'
 # true
 ```
-
 
 
 ### Check cache's connection
@@ -449,7 +439,6 @@ curl ${BASE_URL}/api/echo/cache | jq '.isSuccess'
 ```
 
 
-
 - Healthy
   - Check your environment variable **HELLO_REDIS_CACHE_CONN** before deployment
 
@@ -461,7 +450,6 @@ curl ${BASE_URL}/api/echo/cache
 curl ${BASE_URL}/api/echo/cache | jq '.isSuccess'
 # true
 ```
-
 
 
 ### System information dump
@@ -484,6 +472,3 @@ curl ${BASE_URL}/api/echo/dump | jq '.extMap'
 #   "_up": "2020-11-30T07:02:09"
 # }
 ```
-
-
-
