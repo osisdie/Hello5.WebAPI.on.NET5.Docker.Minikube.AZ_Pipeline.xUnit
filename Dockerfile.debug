@@ -1,0 +1,23 @@
+# Use the official Microsoft .NET SDK image to build the app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+EXPOSE 8080
+
+# RUN apt-get update && apt-get install -y git
+
+COPY . .
+COPY src/Endpoint/Hello8/*.csproj ./src/Endpoint/Hello8/
+COPY data/ src/Endpoint/Hello8/App_Data/
+
+# Build the application
+RUN dotnet restore "src/Endpoint/Hello8/Hello8.Domain.Endpoint.csproj"
+RUN dotnet publish "src/Endpoint/Hello8/Hello8.Domain.Endpoint.csproj" -c Debug -o /app --no-restore
+
+# Use the ASP.NET Core runtime image to run the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+WORKDIR /app
+COPY --from=build /app .
+
+# Run the application
+ENTRYPOINT ["dotnet", "Hello8.Domain.Endpoint.dll"]

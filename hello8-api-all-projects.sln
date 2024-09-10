@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\Endpoint\Hello8\.version = src\Endpoint\Hello8\.version
 		ChangeLog.md = ChangeLog.md
 		Dockerfile = Dockerfile
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6529459E-7F50-44BB-92AA-1BD12D4A216E}"
@@ -73,16 +74,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{603AF185-867C-44BE-A5E2-61D690F52570}"
 	ProjectSection(SolutionItems) = preProject
 		deploy\azure-pipelines.yml = deploy\azure-pipelines.yml
+		deploy\db.udl = deploy\db.udl
 		minikube\deployment.yaml = minikube\deployment.yaml
+		dockerbuild.sh = dockerbuild.sh
 		minikube\ingress.yaml = minikube\ingress.yaml
-		dockerbuild.hello-api.sh = dockerbuild.hello-api.sh
 		minikube\minikube.sh = minikube\minikube.sh
 		minikube\service.yaml = minikube\service.yaml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "about", "about", "{999D221F-5E1A-4421-9567-D8C0A9E5C12A}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -181,7 +178,6 @@ Global
 		{43A12472-A4E4-4395-B0E7-DBA285B93C2C} = {D5A0F19E-ED8A-4145-9E17-A4EEDBF4987E}
 		{5E03BFCA-2008-4E08-8160-B34F4B544D0A} = {C419F684-BCBD-4DD2-9906-340C7F0DD9AE}
 		{603AF185-867C-44BE-A5E2-61D690F52570} = {C419F684-BCBD-4DD2-9906-340C7F0DD9AE}
-		{999D221F-5E1A-4421-9567-D8C0A9E5C12A} = {C419F684-BCBD-4DD2-9906-340C7F0DD9AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4654B18-FD56-4698-96A3-C9FCB215E9A0}

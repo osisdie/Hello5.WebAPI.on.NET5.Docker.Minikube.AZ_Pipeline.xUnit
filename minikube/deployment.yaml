@@ -18,7 +18,7 @@ spec:
         app: hello8-api-dev
     spec:
       imagePullSecrets:
-      - name: regcred  # Add this line to specify the secret
+      - name: regcred  # Add creds to specify the private docker registery if needed
       containers:
       - name: hello8-api
         image: ${IMAGE_HOST}/hello8-api:2.0.1

@@ -59,16 +59,18 @@ Whenever any feature, bugfix or necessary to rebuild a new image, make sure you 
 - ChangeLog File: `./ChangeLog.md`
 - ChangeLog Format: Markdown with date and version number, such as
   ```markdown
+  ### 2024-09-09
+  * ** Hello8.Domain.Endpoint (2.0.1)
+    * Upgrade to .NET 8.0 from .NET 5.0
   ### 2020-11-30
-  * ** Hello8.Domain.Contract (1.0.0)
+  * ** Hello8.Domain.Contract (1.0.1)
     * Created
-
   ### 2020-11-29
   * ** Hello8.Domain.Endpoint (1.0.0)
     * Created
   ```
 
-- Git Version Tags: `hello8-api/v1.0.0-100`
+- Git Version Tags: `hello8-api/v1.0.1-100`
 
 
 ## UnitTesting

@@ -29,10 +29,9 @@ namespace Hello8.Domain.Endpoint.Controllers
             if (!ModelState.IsValid)
                 return new BadRequestResult();
             
-            requestDto.PreProcess();
+            await requestDto.PreProcess();
             var fakeSessionId = DateTime.UtcNow.Ticks.ToString();
             
-            await Task.CompletedTask;
             return new OkObjectResult(fakeSessionId);
         }
 
@@ -45,17 +44,16 @@ namespace Hello8.Domain.Endpoint.Controllers
             if (!ModelState.IsValid)
                 return new BadRequestResult();
             
-            requestDto.PreProcess();
+            await requestDto.PreProcess();
             var res = new SvcResponse<HelloEchoResponseDto>();
             var fakeSessionId = DateTime.UtcNow.Ticks.ToString();
 
-            res.Data = new HelloEchoResponseDto
+            res.SetData(new HelloEchoResponseDto
             {
                 Recv = fakeSessionId
-            };
+            }).Success();
 
-            await Task.CompletedTask;
-            return new JsonResult(res.Success());
+            return new JsonResult(res);
         }
     }
 }

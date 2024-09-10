@@ -13,13 +13,15 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "health",
-      "applicationUrl": "http://+:5005",
+      "applicationUrl": "http://+:5000",
       "environmentVariables": {
+        "ASPNETCORE_HTTP_PORTS": "5000",
+        "ASPNETCORE_URLS": "http://+:5000",
         "ASPNETCORE_ENVIRONMENT": "Debug",
         //"ASPNETCORE_ENVIRONMENT": "Development"
         //"ASPNETCORE_ENVIRONMENT": "Production"
-        "COREFX_DEPLOY_NAME": "hello8",
-        "COREFX_API_NAME": "hello8-debug"
+        "COREFX_DEPLOY_NAME": "hello8-api-debug",
+        "COREFX_API_NAME": "hello8-api-debug"
         //"AWS_ACCESS_KEY_ID": "",
         //"AWS_SECRET_ACCESS_KEY": ""
         //"HELLO_HELLODB_CONN": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HelloDB;user id=demouser;password=demopwd;Connection Timeout=5",

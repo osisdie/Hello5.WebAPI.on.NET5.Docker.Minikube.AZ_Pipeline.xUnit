@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    image: hello8-api:latest # Change this to your actual image
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "8080:8080"  # Map port 8080 on the host to port 8080 in the container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Debug
+      - ASPNETCORE_URLS=http://0.0.0.0:8080  # Ensure the app listens on all interfaces
+      - ASPNETCORE_HTTP_PORTS=8080
+      - COREFX_DEPLOY_NAME=hello8-api-debug
+      - COREFX_API_NAME=hello8-api-debug
+      - HELLO_HELLODB_CONN="Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HelloDB;user id=demouser;password=demopwd;Connection Timeout=5"
+      - HELLO_REDIS_CACHE_CONN="127.0.0.1:16379"
+    depends_on:
+      - redis  # Example if you have a database service
+    networks:
+      - app-network
+  redis:
+    image: redis:latest
+    ports:
+      - "16379:6379"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+# Usage:
+# $ docker-compose up
+# $ docker-compose down
+# $ docker-compose logs
+# $ docker-compose exec app bash
+# $ docker-compose ps
+# $ docker-compose up --build

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Hello8.Domain.Common.Consts;
 using Hello8.Domain.Contract.Models.Echo;
 
@@ -6,7 +7,7 @@ namespace Hello8.Domain.Contract.Models.Extensions
 {
     public static class HelloEchoRequestDto_Extension
     {
-        public static HelloEchoRequestDto PreProcess(this HelloEchoRequestDto requestDto)
+        public static async Task<HelloEchoRequestDto> PreProcess(this HelloEchoRequestDto requestDto)
         {
             if (requestDto != null)
             {
@@ -18,6 +19,7 @@ namespace Hello8.Domain.Contract.Models.Extensions
 #endif
             }
 
+            await Task.CompletedTask;
             return requestDto;
         }
     }

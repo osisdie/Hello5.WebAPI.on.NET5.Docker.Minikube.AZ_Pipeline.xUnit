@@ -64,19 +64,19 @@ sed -i "s/\/${REPO_NAME}:${IMAGE_TAG_REGEX}/\/${REPO_NAME}:${VERSION}/" ${KUBE_D
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
-#   name: hello8-api
+#   name: hello8-api-dev
 # spec:
 #   replicas: 1
 #   selector:
 #     matchLabels:
-#       app: hello8-api
+#       app: hello8-api-dev
 #   template:
 #     metadata:
 #       labels:
-#         app: hello8-api
+#         app: hello8-api-dev
 #     spec:
 #       containers:
-#       - name: hello8-api
+#       - name: hello8-api-dev
 #         image: ${IMAGE_HOST}/hello8-api:2.0.1
 #       imagePullSecrets:
 #       - name: regcred  # Add this line to specify the secret

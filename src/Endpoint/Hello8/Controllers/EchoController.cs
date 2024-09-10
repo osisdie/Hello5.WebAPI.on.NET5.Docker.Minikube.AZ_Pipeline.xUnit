@@ -51,7 +51,7 @@ namespace Hello8.Domain.Endpoint.Controllers
         [Route("api/echo/db")]
         public async Task<ActionResult> EchoDB(string ver = null)
         {
-            var res = new HelloEchoDBResponseDto();
+            HelloEchoDBResponseDto res = new();
             if (!string.IsNullOrEmpty(ver))
             {
                 await _repository.SetVerision(ver);
